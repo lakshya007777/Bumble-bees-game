@@ -5,7 +5,7 @@
   "display": "fullscreen",
   "background_color": "#f9f6f0",
   "theme_color": "#ffcc00",
-  "orientation": "portrait",
+  "orientation": "landscape",
   "icons": [
     {
       "src": "raven.png",

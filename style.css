@@ -78,6 +78,8 @@ canvas {
     opacity: 0;
     pointer-events: none;
     transition: opacity 0.2s ease;
+    overflow-y: auto;
+    padding: 20px 0;
 }
 
 .overlay-screen.active {
@@ -98,6 +100,7 @@ canvas {
     width: 90%;
     max-width: 480px;
     transition: transform 0.2s ease;
+    margin: auto;
 }
 
 .overlay-screen.active .retro-card {
@@ -482,5 +485,95 @@ canvas {
         width: 32px;
         height: 32px;
         font-size: 1rem;
+    }
+}
+
+/* Portrait orientation warning */
+#orientation-warning {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: var(--bg-light);
+    background-image: radial-gradient(#e5e0d8 2px, transparent 2px);
+    background-size: 30px 30px;
+    z-index: 9999;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 20px;
+}
+
+.warning-content {
+    background: var(--card-bg);
+    border: 4px solid var(--border-color);
+    box-shadow: 8px 8px 0px var(--border-color);
+    padding: 30px;
+    max-width: 320px;
+    margin: auto;
+}
+
+.warning-icon {
+    font-size: 3rem;
+    margin-bottom: 15px;
+    animation: rotateIcon 2s linear infinite;
+}
+
+@keyframes rotateIcon {
+    0% { transform: rotate(0deg); }
+    50% { transform: rotate(180deg); }
+    100% { transform: rotate(360deg); }
+}
+
+#orientation-warning h2 {
+    font-family: var(--font-heading);
+    font-weight: 900;
+    font-size: 1.8rem;
+    color: var(--primary-red);
+    margin-bottom: 10px;
+    text-transform: uppercase;
+}
+
+#orientation-warning p {
+    font-family: var(--font-body);
+    font-size: 1rem;
+    color: var(--text-main);
+    line-height: 1.4;
+}
+
+@media (max-width: 900px) and (orientation: portrait) {
+    #orientation-warning {
+        display: flex;
+    }
+}
+
+/* Short screen height optimization */
+@media (max-height: 520px) {
+    .retro-card {
+        padding: 20px;
+    }
+    .retro-title {
+        font-size: 2.2rem;
+        margin-bottom: 10px;
+    }
+    .form-row {
+        margin-bottom: 10px;
+    }
+    .high-score-display {
+        margin-top: 15px;
+        padding-top: 10px;
+    }
+    .copyright-notice {
+        margin-top: 10px !important;
+    }
+    .button-stack {
+        gap: 8px;
+    }
+    .retro-subtitle {
+        font-size: 1.5rem;
+        margin-bottom: 10px;
     }
 }

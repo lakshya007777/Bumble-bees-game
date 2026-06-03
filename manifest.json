@@ -1,0 +1,23 @@
+{
+  "name": "Bumble bEEs",
+  "short_name": "Bumble bEEs",
+  "start_url": "./intex.html",
+  "display": "fullscreen",
+  "background_color": "#f9f6f0",
+  "theme_color": "#ffcc00",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "raven.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "raven.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}

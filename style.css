@@ -1,0 +1,486 @@
+/* Retro Light Color & Design Variables */
+:root {
+    --bg-light: #f9f6f0;
+    --card-bg: #ffffff;
+    --border-color: #1a1a1a;
+    --primary-red: #ff3344;
+    --primary-red-hover: #e6192b;
+    --primary-yellow: #ffcc00;
+    --primary-yellow-hover: #e6b800;
+    --text-main: #1a1a1a;
+    --text-muted: #555555;
+    --font-heading: 'Space Grotesk', sans-serif;
+    --font-body: 'Outfit', sans-serif;
+}
+
+/* Base resets & styles */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    user-select: none;
+}
+
+body {
+    background: var(--bg-light);
+    /* Subtle retro dot pattern or just solid light */
+    background-image: radial-gradient(#e5e0d8 2px, transparent 2px);
+    background-size: 30px 30px;
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+    color: var(--text-main);
+    font-family: var(--font-body);
+    touch-action: none;
+    -webkit-user-select: none;
+}
+
+/* Canvas layers */
+canvas {
+    position: absolute;
+    left: 0;  
+    top: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 1;
+}
+
+#collisionCanvas {
+    opacity: 0;
+    pointer-events: none;
+    z-index: 0;
+}
+
+/* Floating HUD & Overlays Layer */
+#ui-container {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 10;
+    pointer-events: none;
+}
+
+/* Generic Overlay Screen */
+.overlay-screen {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: rgba(249, 246, 240, 0.7);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s ease;
+}
+
+.overlay-screen.active {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.hidden {
+    display: none !important;
+}
+
+/* Retro Card Styling */
+.retro-card {
+    background: var(--card-bg);
+    border: 4px solid var(--border-color);
+    box-shadow: 8px 8px 0px var(--border-color);
+    padding: 40px;
+    width: 90%;
+    max-width: 480px;
+    transition: transform 0.2s ease;
+}
+
+.overlay-screen.active .retro-card {
+    transform: scale(1);
+}
+
+/* Text Styling */
+.retro-title {
+    font-family: var(--font-heading);
+    font-size: 3.2rem;
+    font-weight: 900;
+    color: var(--primary-yellow);
+    text-shadow: 3px 3px 0px var(--border-color), -1px -1px 0 var(--border-color), 1px -1px 0 var(--border-color), -1px 1px 0 var(--border-color), 1px 1px 0 var(--border-color);
+    margin-bottom: 25px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+}
+
+.retro-subtitle {
+    font-family: var(--font-heading);
+    font-size: 2rem;
+    font-weight: 800;
+    color: var(--primary-red);
+    text-shadow: 2px 2px 0px var(--border-color);
+    margin-bottom: 20px;
+}
+
+.retro-label {
+    display: block;
+    font-family: var(--font-heading);
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--text-main);
+    margin-bottom: 8px;
+    text-transform: uppercase;
+}
+
+.form-row {
+    margin-bottom: 20px;
+}
+
+/* Retro Buttons */
+.retro-btn {
+    font-family: var(--font-heading);
+    font-size: 1.2rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    padding: 12px 24px;
+    border: 3px solid var(--border-color);
+    background: #ffffff;
+    color: var(--text-main);
+    cursor: pointer;
+    box-shadow: 4px 4px 0px var(--border-color);
+    transition: all 0.1s ease;
+    width: 100%;
+}
+
+.retro-btn:active {
+    transform: translate(4px, 4px);
+    box-shadow: 0px 0px 0px var(--border-color);
+}
+
+.yellow-btn {
+    background: var(--primary-yellow);
+}
+.yellow-btn:hover {
+    background: var(--primary-yellow-hover);
+}
+
+.red-btn {
+    background: var(--primary-red);
+    color: white;
+}
+.red-btn:hover {
+    background: var(--primary-red-hover);
+}
+
+.default-btn:hover {
+    background: #f0f0f0;
+}
+
+.big-play-btn {
+    font-size: 2rem;
+    padding: 18px 24px;
+    background: var(--primary-yellow);
+    box-shadow: 6px 6px 0px var(--border-color);
+    border-width: 4px;
+    margin-top: 10px;
+}
+.big-play-btn:hover {
+    background: var(--primary-yellow-hover);
+}
+.big-play-btn:active {
+    transform: translate(6px, 6px);
+    box-shadow: 0px 0px 0px var(--border-color);
+}
+
+/* Small Selection Buttons */
+.difficulty-select, .skin-select {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+}
+
+.retro-btn-sm {
+    font-family: var(--font-heading);
+    font-size: 1rem;
+    font-weight: 700;
+    padding: 8px 16px;
+    border: 2px solid var(--border-color);
+    background: #ffffff;
+    cursor: pointer;
+    box-shadow: 3px 3px 0px var(--border-color);
+    flex: 1;
+    transition: all 0.1s ease;
+}
+
+.retro-btn-sm:active {
+    transform: translate(3px, 3px);
+    box-shadow: 0px 0px 0px var(--border-color);
+}
+
+.retro-btn-sm.active {
+    background: var(--text-main);
+    color: #ffffff;
+}
+
+.button-stack {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+/* High Score Display */
+.high-score-display {
+    margin-top: 25px;
+    padding-top: 15px;
+    border-top: 3px dashed var(--border-color);
+    font-family: var(--font-heading);
+    font-size: 1.2rem;
+    font-weight: 800;
+}
+
+.hs-label {
+    color: var(--text-muted);
+}
+
+.hs-val {
+    color: var(--primary-red);
+    font-size: 1.5rem;
+}
+
+/* HUD Styling */
+.hud-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 70px;
+    background: #ffffff;
+    border-bottom: 4px solid var(--border-color);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 30px;
+    pointer-events: auto;
+    box-shadow: 0 4px 0px rgba(0,0,0,0.1);
+}
+
+.hud-left, .hud-right, .hud-center {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.hud-player-name {
+    font-family: var(--font-heading);
+    font-weight: 800;
+    font-size: 1.2rem;
+    color: var(--text-main);
+    display: none; /* Hidden for now per design simplification */
+}
+
+.hud-score-box {
+    font-family: var(--font-heading);
+    font-size: 1.4rem;
+    font-weight: 800;
+}
+
+.score-val {
+    color: var(--primary-red);
+}
+
+.retro-icon-btn {
+    background: var(--primary-yellow);
+    border: 2px solid var(--border-color);
+    box-shadow: 2px 2px 0px var(--border-color);
+    width: 40px;
+    height: 40px;
+    font-size: 1.2rem;
+    border-radius: 0;
+    cursor: pointer;
+}
+.retro-icon-btn:active {
+    transform: translate(2px, 2px);
+    box-shadow: 0 0 0 var(--border-color);
+}
+
+/* Survival Hearts */
+.lives-container {
+    display: flex;
+    gap: 8px;
+}
+
+.heart {
+    font-size: 1.5rem;
+    transition: all 0.2s ease;
+}
+
+.heart.lost {
+    opacity: 0.3;
+    filter: grayscale(1);
+    transform: scale(0.8);
+}
+
+/* Time Attack Bar */
+.timer-container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: 200px;
+}
+
+.timer-icon {
+    font-size: 1.2rem;
+}
+
+.timer-bar-bg {
+    flex: 1;
+    height: 14px;
+    background: #e0e0e0;
+    border: 2px solid var(--border-color);
+}
+
+.timer-bar-fill {
+    width: 100%;
+    height: 100%;
+    background: var(--primary-yellow);
+    transition: width 0.1s linear, background 0.3s ease;
+}
+
+.timer-text {
+    font-family: var(--font-heading);
+    font-weight: 800;
+    width: 35px;
+}
+
+/* Summary Grid */
+.retro-summary {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-bottom: 20px;
+    border: 3px solid var(--border-color);
+    background: #f9f9f9;
+    padding: 15px;
+}
+
+.summary-item {
+    display: flex;
+    flex-direction: column;
+}
+
+.summary-lbl {
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: var(--text-muted);
+}
+
+.summary-val {
+    font-family: var(--font-heading);
+    font-weight: 800;
+    font-size: 1.2rem;
+    color: var(--text-main);
+}
+
+.high-score-badge {
+    background: var(--primary-yellow);
+    border: 2px solid var(--border-color);
+    padding: 8px;
+    font-weight: 800;
+    font-family: var(--font-heading);
+    margin-bottom: 15px;
+    box-shadow: 2px 2px 0 var(--border-color);
+}
+
+.text-center {
+    text-align: center;
+}
+
+.animate-zoom {
+    animation: zoomIn 0.2s ease forwards;
+}
+
+@keyframes zoomIn {
+    from { opacity: 0; transform: scale(0.9); }
+    to { opacity: 1; transform: scale(1); }
+}
+
+/* Floating Elements */
+.hit-popup {
+    position: absolute;
+    pointer-events: none;
+    font-family: var(--font-heading);
+    font-size: 1.8rem;
+    font-weight: 900;
+    color: var(--primary-yellow);
+    text-shadow: 2px 2px 0 var(--border-color);
+    animation: floatUpAndFade 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+    z-index: 100;
+}
+
+.hit-popup.miss {
+    color: var(--primary-red);
+}
+
+@keyframes floatUpAndFade {
+    0% { opacity: 1; transform: translate(-50%, -50%) translateY(0) scale(0.8); }
+    50% { opacity: 1; transform: translate(-50%, -50%) translateY(-20px) scale(1.2); }
+    100% { opacity: 0; transform: translate(-50%, -50%) translateY(-40px) scale(0.9); }
+}
+
+.screen-shake {
+    animation: shake 0.15s linear 2;
+}
+
+@keyframes shake {
+    0% { transform: translate(2px, 1px); }
+    25% { transform: translate(-2px, -1px); }
+    50% { transform: translate(1px, 2px); }
+    75% { transform: translate(-1px, -2px); }
+    100% { transform: translate(1px, 1px); }
+}
+
+/* Mobile Optimization */
+@media (max-width: 600px) {
+    .retro-title {
+        font-size: 2.2rem;
+        margin-bottom: 15px;
+    }
+    .retro-subtitle {
+        font-size: 1.5rem;
+    }
+    .retro-card {
+        padding: 20px;
+        width: 95%;
+    }
+    .big-play-btn {
+        font-size: 1.5rem;
+        padding: 12px 20px;
+    }
+    .hud-container {
+        padding: 0 10px;
+        height: 60px;
+    }
+    .hud-left, .hud-right, .hud-center {
+        gap: 10px;
+    }
+    .hud-score-box {
+        font-size: 1.1rem;
+    }
+    .timer-container {
+        width: 120px;
+    }
+    .timer-text {
+        font-size: 0.9rem;
+    }
+    .heart {
+        font-size: 1.2rem;
+    }
+    .retro-icon-btn {
+        width: 32px;
+        height: 32px;
+        font-size: 1rem;
+    }
+}

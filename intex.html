@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Bumble bEEs</title>
+    
+    <!-- PWA & Mobile Fullscreen Meta Tags -->
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#f9f6f0">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="apple-touch-icon" href="raven.png">
+    
+    <!-- Modern gaming typography -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;800&family=Space+Grotesk:wght@400;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Game Canvas Layer -->
+    <canvas id="collisionCanvas"></canvas>
+    <canvas id="canvas1"></canvas>
+    
+    <!-- UI Layer -->
+    <div id="ui-container">
+        
+        <!-- MAIN MENU -->
+        <div id="main-menu" class="overlay-screen active">
+            <div class="menu-card retro-card text-center">
+                <header class="menu-header">
+                    <h1 class="retro-title">Bumble bEEs</h1>
+                </header>
+                
+
+                <div class="form-row">
+                    <label class="retro-label">DIFFICULTY</label>
+                    <div class="difficulty-select">
+                        <button class="diff-btn retro-btn-sm" data-diff="easy">EASY</button>
+                        <button class="diff-btn retro-btn-sm active" data-diff="medium">MED</button>
+                        <button class="diff-btn retro-btn-sm" data-diff="hard">HARD</button>
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <button id="main-play-btn" class="retro-btn big-play-btn">PLAY</button>
+                </div>
+                
+                <div class="high-score-display">
+                    <span class="hs-label">HIGH SCORE: </span>
+                    <span id="menu-high-score" class="hs-val">0</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- MODE SELECTION SCREEN -->
+        <div id="mode-screen" class="overlay-screen">
+            <div class="menu-card retro-card text-center animate-zoom">
+                <h2 class="retro-subtitle">SELECT MODE</h2>
+                <div class="button-stack">
+                    <button class="mode-start-btn retro-btn yellow-btn" data-mode="timeAttack">60s LIMIT</button>
+                    <button class="mode-start-btn retro-btn red-btn" data-mode="survival">5 LIVES</button>
+                    <button id="cancel-mode-btn" class="retro-btn default-btn" style="margin-top: 15px;">BACK</button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- IN-GAME HUD -->
+        <div id="game-hud" class="hud-container hidden">
+            <div class="hud-left">
+                <span class="hud-player-name" id="hud-name-display">Hunter</span>
+                <span class="hud-score-box">SCORE: <span id="hud-score" class="score-val">0</span></span>
+            </div>
+            
+            <div class="hud-center">
+                <div id="hud-survival-lives" class="lives-container">
+                    <span class="heart icon-glow" data-life="1">❤️</span>
+                    <span class="heart icon-glow" data-life="2">❤️</span>
+                    <span class="heart icon-glow" data-life="3">❤️</span>
+                    <span class="heart icon-glow" data-life="4">❤️</span>
+                    <span class="heart icon-glow" data-life="5">❤️</span>
+                </div>
+                <div id="hud-time-attack" class="timer-container hidden">
+                    <span class="timer-icon">⏱️</span>
+                    <div class="timer-bar-bg">
+                        <div id="hud-timer-fill" class="timer-bar-fill"></div>
+                    </div>
+                    <span id="hud-timer-text" class="timer-text">60s</span>
+                </div>
+            </div>
+            
+            <div class="hud-right">
+                <button id="sound-toggle-btn" class="icon-btn retro-icon-btn" title="Toggle Sound">🔊</button>
+                <button id="pause-game-btn" class="icon-btn retro-icon-btn" title="Pause Game">⏸️</button>
+            </div>
+        </div>
+        
+        <!-- PAUSE SCREEN -->
+        <div id="pause-screen" class="overlay-screen">
+            <div class="menu-card retro-card text-center">
+                <h2 class="retro-subtitle">PAUSED</h2>
+                <div class="button-stack">
+                    <button id="resume-game-btn" class="retro-btn yellow-btn">RESUME</button>
+                    <button id="restart-game-btn" class="retro-btn default-btn">RESTART</button>
+                    <button id="quit-game-btn" class="retro-btn red-btn">MAIN MENU</button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- GAME OVER SCREEN -->
+        <div id="game-over-screen" class="overlay-screen">
+            <div class="menu-card retro-card text-center animate-zoom">
+                <div class="game-over-header">
+                    <h1 class="retro-title" id="game-over-title">GAME OVER</h1>
+                    <p class="subtitle" id="game-over-message" style="color: #333;">Well tried!</p>
+                </div>
+                
+                <div class="summary-grid retro-summary">
+                    <div class="summary-item">
+                        <span class="summary-lbl">FINAL SCORE</span>
+                        <span class="summary-val" id="summary-score">0</span>
+                    </div>
+                    <div class="summary-item">
+                        <span class="summary-lbl">ACCURACY</span>
+                        <span class="summary-val" id="summary-accuracy">0%</span>
+                    </div>
+                    <div class="summary-item">
+                        <span class="summary-lbl">HITS / SHOTS</span>
+                        <span class="summary-val" id="summary-ratio">0 / 0</span>
+                    </div>
+                    <div class="summary-item">
+                        <span class="summary-lbl">MODE</span>
+                        <span class="summary-val" id="summary-mode">Survival</span>
+                    </div>
+                </div>
+                
+                <div id="new-high-score-badge" class="high-score-badge hidden">
+                    ⭐ NEW HIGH SCORE! ⭐
+                </div>
+                
+                <div class="button-stack">
+                    <button id="game-over-restart-btn" class="retro-btn yellow-btn">START AGAIN</button>
+                    <button id="game-over-menu-btn" class="retro-btn default-btn">MAIN MENU</button>
+                </div>
+            </div>
+        </div>
+        
+    </div>
+    
+    <script src="script.js"></script>
+</body>
+</html>

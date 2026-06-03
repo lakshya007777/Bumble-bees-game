@@ -657,7 +657,17 @@ function requestFullScreen() {
     const doc = document.documentElement;
     const reqFS = doc.requestFullscreen || doc.webkitRequestFullscreen || doc.mozRequestFullScreen || doc.msRequestFullscreen;
     if (reqFS) {
-        reqFS.call(doc).catch(err => console.log(err));
+        try {
+            const promise = reqFS.call(doc);
+            if (promise) promise.catch(err => console.log(err));
+        } catch(e) { console.log(e); }
+    }
+    
+    // Attempt orientation lock
+    if (screen.orientation && screen.orientation.lock) {
+        try {
+            screen.orientation.lock('landscape').catch(err => console.log('Orientation lock failed:', err));
+        } catch (e) { console.log(e); }
     }
 }
 
